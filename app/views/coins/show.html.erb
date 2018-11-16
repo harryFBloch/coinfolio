@@ -1,0 +1,64 @@
+<head>
+  <link rel="stylesheet" href="/stylesheets/buttons.css">
+  <link rel="stylesheet" href="/stylesheets/edit_table.css">
+  <link rel="stylesheet" href="/stylesheets/show_table.css">
+</head>
+
+<h1><%= @coin.name %></h1>
+<div>
+  <table id="myTable" rules = "cols">
+    <tr class="header">
+      <th style="width:15%;">Amount</th>
+      <th style="width:15%;">Purchase Price</th>
+      <th style="width:15%;">Current Price</th>
+      <th style="width:15%;">% Change</th>
+        <th style="width:15%;">Value</th>
+        <th style="width:15%;">24hr Volume USD</th>
+        <th style="width:15%;">Market Cap</th>
+    </tr>
+    <tr>
+      <td><%= @coin.amount %></td>
+      <td>$<%= @coin.price_paid %></td>
+      <td>$<%= @coin.current_price.round(3) %></td>
+      <td><%= @coin_hash[:percent_change]%></td>
+      <td>$<%= (@coin.amount * @coin.current_price).round(3) %></td>
+      <td><%= @coin_hash[:volume_usd_24hr]%></td>
+      <td><%= @coin_hash[:usd_market_cap]%></td>
+    </tr>
+  </table>
+</div>
+
+<div>
+  <div class="btn-group left">
+    <button onclick="change_time('<%= @coin_hash[:ticker].downcase %>', '24h')">1 Day</button>
+    <button onclick="change_time('<%= @coin_hash[:ticker].downcase %>', '7d')">7 Days</button>
+    <button onclick="change_time('<%= @coin_hash[:ticker].downcase %>', '30d')">30 Days</button>
+    <button onclick="change_time('<%= @coin_hash[:ticker].downcase %>', '1y')">1 Year</button>
+  </div>
+
+<hr />
+
+<img id = "graph" src = "https://cryptohistory.org/charts/<%= @coin_hash[:graph_type] %>/<%= @coin_hash[:ticker].downcase %>-usd/<%= @coin_hash[:graph_time] %>/svg" />
+
+  <div class="btn-group">
+    <button onclick="line('<%= @coin_hash[:ticker].downcase %>', '<%= @coin_hash[:graph_time]%>')">Line</button>
+    <button onclick="candle('<%= @coin_hash[:ticker].downcase %>', '<%= @coin_hash[:graph_time]%>')">Candle Stick</button>
+  </div>
+</div>
+
+<script >
+function line(name, time) {
+    document.getElementById("graph").src = "https://cryptohistory.org/charts/light/" + name + "-usd/" + time + "/svg"
+}
+
+function candle(name, time) {
+  document.getElementById("graph").src = "https://cryptohistory.org/charts/candlestick/" + name + "-usd/" + time + "/svg"
+}
+
+function change_time(name, time) {
+  console.log(time)
+  url_array = document.getElementById("graph").src.split("/")
+  document.getElementById("graph").src = "https://cryptohistory.org/charts/" + url_array[4] +"/" + name + "-usd/" + time + "/svg"
+}
+
+</script>

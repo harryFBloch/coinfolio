@@ -1,0 +1,61 @@
+<head>
+  <link rel="stylesheet" href="/stylesheets/new_coin.css">
+</head>
+
+<h1>Add a new coin to your Coinfolio</h1>
+  <% if @coin && @coin.errors %>
+    <% @coin.errors.full_messages.each do |message| %>
+      <h2><%= message %></h2>
+    <% end %>
+  <% end %>
+<form id = "post-form" method = "post" action = "/coins">
+
+
+<input type="text" id="coin-search-bar" class="coin-search-bar" onkeyup="myFunction()" placeholder="Search for coins.." name = "coin" >
+<input type = "text" class="coin-search-bar" name = "price_paid" placeholder="Price Paid:"/>
+<input type = "text" class="coin-search-bar" name = "amount" placeholder="Amount:"/>
+<br />
+<input type = "submit">
+<br />
+<ul id="available-coin-list">
+  <% @available_coins.each_with_index do |coin, index| %>
+  <li >
+    <a id = "<%= index %>" onclick="fillInInput('<%= coin.name %>', '<%= index %>')">
+      <%= coin.name %> - $<%= coin.current_price  %>
+    </a>
+  </li>
+<% end %>
+</ul>
+<input type = "hidden" name = "coin_index" id = "coin-id">
+</form>
+
+<script>
+function myFunction() {
+    // Declare variables
+    var input, filter, ul, li, a, i;
+    input = document.getElementById('coin-search-bar');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("available-coin-list");
+    li = ul.getElementsByTagName('li');
+
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+
+function fillInInput(coin_name, coin_id) {
+  for (i = 0; i < 100 ; i++) {
+    document.getElementById(i).style.backgroundColor = 'grey'
+  }
+  input = document.getElementById('coin-search-bar');
+  input.value = coin_name
+  document.getElementById('coin-id').value = coin_id
+  document.getElementById(coin_id).style.backgroundColor = "tomato";
+}
+</script>

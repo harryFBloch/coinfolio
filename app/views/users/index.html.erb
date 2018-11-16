@@ -1,0 +1,54 @@
+<head>
+  <link rel="stylesheet" href="/stylesheets/edit_table.css">
+</head>
+
+<h1><%= @user.username %>'s Coinfolio</h1>
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+
+<table id="myTable" rules = "cols">
+  <tr class="header">
+    <th style="width:20%;">Coin</th>
+    <th style="width:20%;">Amount</th>
+    <th style="width:20%;">Purchase Price</th>
+    <th style="width:20%;">Current Value</th>
+    <th style="width:20%;">% Change</th>
+  </tr>
+  <% @user.coins.each do |coin| %>
+  <tr>
+    <td><a href = "/coins/<%= coin.id %>"><%= coin.name %></a></td>
+    <td><%= coin.amount %></td>
+    <td><%= coin.price_paid %></td>
+    <td><%= coin.current_price %></td>
+    <% increase = coin.current_price.to_f - coin.price_paid.to_f%>
+    <td><%= ((increase / coin.price_paid.to_f) * 100) %></td>
+  </tr>
+
+  <% end %>
+
+
+</table>
+
+
+<script>
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>

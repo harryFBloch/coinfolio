@@ -1,0 +1,14 @@
+
+<h1>Edit <%= @coin.name %> </h1>
+
+<form method = "post" action = "/coins/<%= @coin.id %>" id="coinform">
+  <input type="hidden" id = "hidden" name="_method" value="PATCH">
+  <select name="buy" form="coinform">
+    <option value = "1" >Buy</option>
+    <option value = "0" >Sell</option>
+  </select>
+  <input type="text" name="amount" placeholder="Amount:">
+  <input type="text" name="price" placeholder="Price:">
+  Use Current Price?<input type="checkbox" name="current_price" value= <%= @coin.current_price %>/>
+  <input type="submit"  value="Submit Transacion">
+</form>
