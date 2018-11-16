@@ -12,16 +12,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="/stylesheets/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
+
   <body>
-    <div class="wrapper">
-
-        <%= yield %>
-
-      <footer class="branding">
-        <small>&copy; 2018 <strong>Coinfolio</strong></small>
-      </footer>
+    <nav class="nav-wrapper tomato darken-4">
+    <div class="container">
+      <a href="#" class="brand-logo">Coinfolio</a>
+      <ul class="right">
+        <li><a href="/users/:id">Portfolio</a></li>
+        <li><a href="/users/new">Sign Up</a></li>
+        <li><a href="/users/login">Log In</a></li>
+      </ul>
     </div>
+  </nav>
+
+  <div class="container">
+    <%= yield %>
+  </div>
+  <footer class="page-footer">
+         <div class="container">
+           <div class="row">
+             <div class="col l6 s12">
+               <h5 class="white-text">Coinfolio</h5>
+             </div>
+             <div class="col l4 offset-l2 s12">
+               <ul>
+                 <li><a class="grey-text text-lighten-3" href="/users/:id">Portfolio</a></li>
+                 <li><a class="grey-text text-lighten-3" href="/users/new">Sign Up</a></li>
+                 <li><a class="grey-text text-lighten-3" href="/users/login">Log In</a></li>
+               </ul>
+             </div>
+           </div>
+         </div>
+         <div class="footer-copyright">
+           <div class="container">
+           © 2018 Copyright Coinfolio
+           <a class="grey-text text-lighten-4 right" href="/users/logout">Logout</a>
+           </div>
+         </div>
+       </footer>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <!--[if lt IE 7]>

@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     if !Helper.logged_in?(session)
      erb :'users/login'
     else
-     redirect "/users"
+     redirect "/users/#{Helper.current_user(session).id}"
    end
   end
 
@@ -14,22 +14,22 @@ class UsersController < ApplicationController
     user = User.find_by(:username => params[:username])
     if user && user.authenticate(params[:password])
       session[:id] = user.id
-      redirect '/users'
+      redirect "/users/#{Helper.current_user(session).id}"
     else
       redirect '/users/login'
     end
   end
 
   # GET: /users
-  get "/users" do
-    if Helper.logged_in?(session) && session[:id] == Helper.current_user(session).id
-      @user = Helper.current_user(session)
-      Coin.get_current_price_for_coins(@user)
-      erb :"/users/index.html"
-    else
-      redirect 'users/login'
-    end
-  end
+  # get "/users" do
+  #   if Helper.logged_in?(session) && session[:id] == Helper.current_user(session).id
+  #     @user = Helper.current_user(session)
+  #     Coin.get_current_price_for_coins(@user)
+  #     erb :"/users/index.html"
+  #   else
+  #     redirect 'users/login'
+  #   end
+  # end
 
   # GET: /users/new
   get "/users/new" do
@@ -39,27 +39,34 @@ class UsersController < ApplicationController
   # POST: /users
   post "/users" do
     #binding.pry
-    user = User.new(:username => params[:username], :password => params[:password])
-    if user.save
-      session[:id] = user.id
-      redirect '/users'
+    @user = User.new(:username => params[:username], :password => params[:password])
+    if @user.save && !User.all.find_by(params[:username])
+      session[:id] = @user.id
+      redirect "/coins"
     else
-      redirect "/users/new"
+      erb :"/users/new.html"
     end
   end
 
-  get 'users/logout' do
+  get '/users/logout' do
     if Helper.logged_in?(session)
         session[:id] = nil
-        redirect '/login'
+        redirect '/users/login'
     else
-        redirect '/login'
+        redirect '/users/login'
     end
   end
 
   # GET: /users/5
   get "/users/:id" do
-    erb :"/users/show.html"
+    if Helper.logged_in?(session) && session[:id] == Helper.current_user(session).id
+      @user = Helper.current_user(session)
+      Coin.get_current_price_for_coins(@user)
+      #binding.pry
+      erb :"/users/show.html"
+    else
+      redirect 'users/login'
+    end
   end
 
   # GET: /users/5/edit
