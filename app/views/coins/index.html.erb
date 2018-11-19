@@ -1,1 +1,42 @@
+<head>
+  <link rel="stylesheet" href="/stylesheets/coin_index.css">
+</head>
 
+<h1 class = "blue-grey-text lighten-2">Welcome To Coinfolio</h1>
+<form>
+<div class = "input-field col s6">
+  <input type= "text" id="coin-search-bar" class="red-text darken-6" onkeyup="myFunction()" placeholder="Search for coins.." name = "coin" >
+</div>
+</form>
+
+<ul class="collection" id = "coin-list">
+<% @available_coins.each_with_index do |coin, index| %>
+    <li class="collection-item avatar"><a>
+      <span class="title blue-grey-text lighten-4"><%= coin.name %></span>
+      <p class = "blue-grey-text lighten-4" >$<%= coin.current_price.round(3) %></p>
+      <a href="/coins/show/<%= index %>" class="secondary-content red-text darken-6">More Info</a>
+      </a>
+    </li>
+    <% end %>
+  </ul>
+
+  <script>
+  function myFunction() {
+      // Declare variables
+      var input, filter, ul, li, a, i;
+      input = document.getElementById('coin-search-bar');
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("coin-list");
+      li = ul.getElementsByTagName('li');
+
+      // Loop through all list items, and hide those who don't match the search query
+      for (i = 0; i < li.length; i++) {
+          a = li[i].getElementsByTagName("a")[0];
+          if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+              li[i].style.display = "";
+          } else {
+              li[i].style.display = "none";
+          }
+      }
+  }
+  </script>

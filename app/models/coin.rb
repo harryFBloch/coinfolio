@@ -1,6 +1,6 @@
 class Coin < ActiveRecord::Base
   belongs_to :user
-  validates :price_paid, :amount, presence: true
+  validates :price_paid, :amount, :name, presence: true
 
   COIN_MARKET_CAP_URL = "https://coinmarketcap.com/"
 
@@ -20,10 +20,10 @@ end
       doc = Nokogiri::HTML(open(COIN_MARKET_CAP_URL))
        coin_array = doc.css("tbody tr").each_with_index.map { |coin_container, index|
          name = coin_container.css("a.currency-name-container").text.strip
-         link = coin_container.css("a.currency-name-container").attr("href").value
+         image_url = coin_container.css("img").attr("src").value
          price = coin_container.css("a.price").attr("data-usd").value.strip
          #puts "#{index + 1}. #{name}-$#{price}"
-         {:name => name, :current_price => price}
+         {:name => name, :current_price => price, :image_url => image_url}
        }
   end
 

@@ -2,32 +2,57 @@
   <link rel="stylesheet" href="/stylesheets/new_coin.css">
 </head>
 
-<h1>Add a new coin to your Coinfolio</h1>
+<h1 class = "blue-grey-text lighten-2">Add a new coin to your Coinfolio</h1>
   <% if @coin && @coin.errors %>
     <% @coin.errors.full_messages.each do |message| %>
-      <h2><%= message %></h2>
+      <h5 class="red-text darken-6"><%= message %></h5>
     <% end %>
   <% end %>
-<form id = "post-form" method = "post" action = "/coins">
+
+  <div class="row" >
+    <form class = "col s12" id = "post-form" method = "post" action = "/coins">
+      <input type = "hidden" name = "coin_index" id = "coin-id">
+      <div class = "row">
+        <% if @coin %>
+        <div class = "input-field col s6">
+          <input type= "text" id="coin-search-bar" class="red-text darken-6" onkeyup="myFunction()" placeholder="Search for coins.." name = "coin" value = "<%= @coin.name %>">
+        </div>
+        <% else %>
+        <div class = "input-field col s6">
+          <input type= "text" id="coin-search-bar" class="red-text darken-6" onkeyup="myFunction()" placeholder="Search for coins.." name = "coin" >
+        </div>
+        <% end %>
+          <% if @coin %>
+        <div class = "input-field col s6">
+          <input type = "text" id="price_paid_input" class="red-text darken-6" name = "price_paid" placeholder="Price Paid:"/>
+        </div>
+          <% else %>
+          <div class = "input-field col s6">
+            <input type = "text" id="price_paid_input" class="red-text darken-6" name = "price_paid" placeholder="Price Paid:" value = "<%= @coin.current_price %>"/>
+          </div>
+          <% end %>
+        <div class = "input-field col s6">
+          <input type = "text" class="red-text darken-6" name = "amount" placeholder="Amount:"/>
+        </div>
+      </div>
+      <button class="btn waves-effect waves-light red darken-6 right" type="submit" name="action" for="post-form">Add Coin
+        <i class="material-icons right">send</i>
+      </button>
+    </form>
+  </div>
+  <ul id="available-coin-list">
+    <% @available_coins.each_with_index do |coin, index| %>
+    <li >
+      <a id = "<%= index %>" onclick="fillInInput('<%= coin.name %>', '<%= index %>', '<%= coin.current_price %>')">
+        <%= coin.name %> - $<%= coin.current_price  %>
+      </a>
+    </li>
+  <% end %>
+  </ul>
 
 
-<input type="text" id="coin-search-bar" class="coin-search-bar" onkeyup="myFunction()" placeholder="Search for coins.." name = "coin" >
-<input type = "text" class="coin-search-bar" name = "price_paid" placeholder="Price Paid:"/>
-<input type = "text" class="coin-search-bar" name = "amount" placeholder="Amount:"/>
-<br />
-<input type = "submit">
-<br />
-<ul id="available-coin-list">
-  <% @available_coins.each_with_index do |coin, index| %>
-  <li >
-    <a id = "<%= index %>" onclick="fillInInput('<%= coin.name %>', '<%= index %>')">
-      <%= coin.name %> - $<%= coin.current_price  %>
-    </a>
-  </li>
-<% end %>
-</ul>
-<input type = "hidden" name = "coin_index" id = "coin-id">
-</form>
+
+
 
 <script>
 function myFunction() {
@@ -49,12 +74,13 @@ function myFunction() {
     }
 }
 
-function fillInInput(coin_name, coin_id) {
+function fillInInput(coin_name, coin_id, current_price) {
   for (i = 0; i < 100 ; i++) {
     document.getElementById(i).style.backgroundColor = 'grey'
   }
   input = document.getElementById('coin-search-bar');
   input.value = coin_name
+  document.getElementById("price_paid_input").value = current_price
   document.getElementById('coin-id').value = coin_id
   document.getElementById(coin_id).style.backgroundColor = "tomato";
 }

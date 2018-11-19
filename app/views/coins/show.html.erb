@@ -4,24 +4,45 @@
   <link rel="stylesheet" href="/stylesheets/show_table.css">
 </head>
 
-<h1><%= @coin.name %></h1>
+<h1 class = "blue-grey-text lighten-2"><%= @coin.name %></h1>
 <div>
-  <table id="myTable" rules = "cols">
+  <% if @coin.user %>
+    <form method = "get" action = "/coins/<%= @coin.id %>/edit" >
+    <button class="btn waves-effect waves-light red darken-6 right" type="submit" name="action">Edit Coin
+      <i class="material-icons right">send</i>
+    </button>
+  <% else %>
+  <form method = "get" action = "/coins/new/<%= @index %>" >
+    <button class="btn waves-effect waves-light red darken-6 right" type="submit" name="action">Add Coin
+      <i class="material-icons right">send</i>
+    </button>
+  </form>
+  <% end %>
+
+  <table id="myTable" rules = "cols" class = "blue-grey-text lighten-2">
     <tr class="header">
+      <% if @coin.user %>
       <th style="width:15%;">Amount</th>
       <th style="width:15%;">Purchase Price</th>
+      <% end %>
       <th style="width:15%;">Current Price</th>
       <th style="width:15%;">% Change</th>
+      <% if @coin.user %>
         <th style="width:15%;">Value</th>
+        <% end %>
         <th style="width:15%;">24hr Volume USD</th>
         <th style="width:15%;">Market Cap</th>
     </tr>
     <tr>
+      <% if @coin.user %>
       <td><%= @coin.amount %></td>
       <td>$<%= @coin.price_paid %></td>
+      <% end %>
       <td>$<%= @coin.current_price.round(3) %></td>
       <td><%= @coin_hash[:percent_change]%></td>
+        <% if @coin.user %>
       <td>$<%= (@coin.amount * @coin.current_price).round(3) %></td>
+      <% end %>
       <td><%= @coin_hash[:volume_usd_24hr]%></td>
       <td><%= @coin_hash[:usd_market_cap]%></td>
     </tr>

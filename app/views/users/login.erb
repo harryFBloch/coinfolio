@@ -1,12 +1,27 @@
-<h1>Welcome To Coinfolio</h1>
-<h2>Please Login</h2>
+<h1 class = "blue-grey-text lighten-2">Welcome To Coinfolio</h1>
+<h2 class = "blue-grey-text lighten-2">Please Login</h2>
 
-<form method = "post" action = "/users/login">
-  <label>Username:</label>
-  <input name = "username" type = "text" />
-  <br></br>
-  <label>Password:</label>
-    <input name = "password" type = "text" />
-    <br></br>
-    <input type = "submit" value = "Log In" />
-</form>
+<% if @user && @user.errors %>
+  <% @user.errors.full_messages.each do |message| %>
+    <h5 class="red-text darken-6"><%= message %></h5>
+  <% end %>
+<% end %>
+
+<div class="row">
+  <form class="col s12" id="log-in-form" method = "post" action = "/users/login">
+    <div class= "row">
+      <div class="input-field col s6">
+        <input name="username" type="text" id="username" class = "red-text darken-6"/>
+        <label for="username" class="active">Email</label>
+      </div>
+      <div class="input-field col s6">
+        <input name="password" type="text" id="password" class = "red-text darken-6"/>
+        <label for="password" class="active ">Password</label>
+      </div>
+    </div>
+    <button class="btn waves-effect waves-light red darken-6" type="submit" name="action" for="sign-up-form">Log In
+      <i class="material-icons right">send</i>
+    </button>
+  </form>
+
+</div>

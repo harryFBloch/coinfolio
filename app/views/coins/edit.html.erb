@@ -1,14 +1,25 @@
 
-<h1>Edit <%= @coin.name %> </h1>
+<h1 class = "blue-grey-text lighten-2" >Edit <%= @coin.name %> </h1>
 
-<form method = "post" action = "/coins/<%= @coin.id %>" id="coinform">
-  <input type="hidden" id = "hidden" name="_method" value="PATCH">
-  <select name="buy" form="coinform">
-    <option value = "1" >Buy</option>
-    <option value = "0" >Sell</option>
-  </select>
-  <input type="text" name="amount" placeholder="Amount:">
-  <input type="text" name="price" placeholder="Price:">
-  Use Current Price?<input type="checkbox" name="current_price" value= <%= @coin.current_price %>/>
-  <input type="submit"  value="Submit Transacion">
-</form>
+<div class="row" >
+  <form class = "col s12" method = "post" action = "/coins/<%= @coin.id %>" id="coinform">
+    <input type="hidden" id = "hidden" name="_method" value="PATCH">
+    <div class = "input-field col s6">
+      <input class="red-text darken-6" type="text" name="price" value="<%= @coin.price_paid %>" id = "price">
+      <label class="active" for = "price">Price:</label>
+    </div>
+    <div class = "input-field col s6">
+      <input class="red-text darken-6" type="text" name="price" value="<%= @coin.amount %>" id = "amount">
+        <label class="active" for = "amount">Amount:</label>
+    </div>
+    <button class="btn waves-effect waves-light red darken-6 left" type="submit" name="action" for="post-form">Edit Coin
+      <i class="material-icons right">send</i>
+    </button>
+  </form>
+  <form method= "post" action = "/coins/<%= @coin.id %>/delete" >
+    <input type="hidden" id = "hidden" name="_method" value="DELETE">
+    <button class="btn waves-effect waves-light blue-grey-text lighten-2 right" type="submit" name="action" for="post-form">DELETE
+      <i class="material-icons right">send</i>
+    </button>
+  </form>
+</div>

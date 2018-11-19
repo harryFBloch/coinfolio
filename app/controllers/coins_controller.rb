@@ -3,9 +3,21 @@ class CoinsController < ApplicationController
   # GET: /coins
   get "/coins" do
     if Helper.logged_in?(session)
-      redirect :"/users"
+      @available_coins = Coin.available_coins
+      erb :"/coins/index.html"
     else
-      redirect '/login'
+      redirect '/users/login'
+    end
+  end
+
+  get "/coins/new/:id" do
+    if Helper.logged_in?(session) && session[:id] == Helper.current_user(session).id
+      @available_coins = Coin.available_coins
+      @user = Helper.current_user(session)
+      @coin = @available_coins[params[:id].to_i]
+      erb :"/coins/new.html"
+    else
+      redirect '/users/login'
     end
   end
 
@@ -22,8 +34,11 @@ class CoinsController < ApplicationController
 
   # POST: /coins
   post "/coins" do
-    @coin = Coin.available_coins[params[:coin_index].to_i]
-    if params[:coin_index] != "" && Helper.logged_in?(session) && @coin.update(user_id: Helper.current_user(session).id, price_paid: params[:price_paid], amount: params[:amount])
+    @coin = Coin.new
+    if !params[:coin_index].empty?
+      @coin = Coin.available_coins[params[:coin_index].to_i]
+    end
+    if Helper.logged_in?(session) && @coin.update(user_id: Helper.current_user(session).id, price_paid: params[:price_paid], amount: params[:amount])
       redirect "/coins"
     else
       @available_coins = Coin.available_coins
@@ -32,11 +47,23 @@ class CoinsController < ApplicationController
     end
   end
 
+  get '/coins/show/:id' do
+    if Helper.logged_in?(session)
+      @coin = Coin.available_coins[params[:id].to_i]
+      @coin_hash = Coin.scrape_info_page(@coin.name)
+      @index = params[:id].to_i
+      erb :"/coins/show.html"
+    else
+      redirect "/users/login"
+    end
+  end
+
   # GET: /coins/5
   get "/coins/:id" do
+    @coin = Coin.new
     @coin = Coin.find_by_id(params[:id])
-    @coin_hash = Coin.scrape_info_page(@coin.name)
-    if @coin.user.id == Helper.current_user(session).id
+    if @coin.id && @coin.user.id == Helper.current_user(session).id
+      @coin_hash = Coin.scrape_info_page(@coin.name)
       erb :"/coins/show.html"
     else
       redirect '/users/login'
@@ -72,6 +99,12 @@ class CoinsController < ApplicationController
 
   # DELETE: /coins/5/delete
   delete "/coins/:id/delete" do
-    redirect "/coins"
+    coin = Coin.find_by_id(params[:id])
+    if Helper.current_user(session) == coin.user
+      coin.destroy
+      redirect "/users/#{coin.user.id}"
+    else
+      redirect "/coins"
+    end
   end
 end

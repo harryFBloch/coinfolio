@@ -2,20 +2,22 @@
   <link rel="stylesheet" href="/stylesheets/edit_table.css">
 </head>
 
-<h1><%= @user.username %>'s Coinfolio</h1>
+<h1 class = "blue-grey-text lighten-2"><%= @user.username %>'s Coinfolio</h1>
+<h3 class = "blue-grey-text lighten-1">Total Value: $<%= @user.coinfolio_value %></h3>
 
-<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for coins.." class = "red-text darken-6">
 
 <table id="myTable" rules = "cols">
   <tr class="header">
-    <th style="width:20%;">Coin</th>
-    <th style="width:20%;">Amount</th>
-    <th style="width:20%;">Purchase Price</th>
-    <th style="width:20%;">Current Value</th>
-    <th style="width:20%;">% Change</th>
+    <th class = "blue-grey-text lighten-4" style="width:20%;">Coin</th>
+    <th class = "blue-grey-text lighten-4" style="width:20%;">Amount</th>
+    <th class = "blue-grey-text lighten-4" style="width:20%;">Purchase Price</th>
+    <th class = "blue-grey-text lighten-4" style="width:20%;">Current Value</th>
+    <th class = "blue-grey-text lighten-4" style="width:20%;">% Change</th>
   </tr>
   <% @user.coins.each do |coin| %>
-  <tr>
+  <tr class = "blue-grey-text lighten-2">
     <td><a href = "/coins/<%= coin.id %>"><%= coin.name %></a></td>
     <td><%= coin.amount %></td>
     <td><%= coin.price_paid %></td>
