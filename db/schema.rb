@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181116184106) do
+ActiveRecord::Schema.define(version: 20181119214433) do
 
   create_table "coins", force: :cascade do |t|
     t.float    "price_paid"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20181116184106) do
     t.float    "current_price"
     t.float    "amount"
     t.string   "image_url"
+    t.string   "info_url"
   end
 
   create_table "users", force: :cascade do |t|

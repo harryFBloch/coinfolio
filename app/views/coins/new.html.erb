@@ -22,7 +22,7 @@
           <input type= "text" id="coin-search-bar" class="red-text darken-6" onkeyup="myFunction()" placeholder="Search for coins.." name = "coin" >
         </div>
         <% end %>
-          <% if @coin %>
+          <% if !@coin %>
         <div class = "input-field col s6">
           <input type = "text" id="price_paid_input" class="red-text darken-6" name = "price_paid" placeholder="Price Paid:"/>
         </div>

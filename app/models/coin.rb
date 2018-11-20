@@ -10,25 +10,25 @@ class Coin < ActiveRecord::Base
       prices.each do |coin_hash|
         if coin.name == coin_hash[:name]
           coin.current_price = coin_hash[:current_price]
-          coin.save
+        end
       end
     end
   end
-end
 
   def self.scrape_top_100_coins
       doc = Nokogiri::HTML(open(COIN_MARKET_CAP_URL))
        coin_array = doc.css("tbody tr").each_with_index.map { |coin_container, index|
          name = coin_container.css("a.currency-name-container").text.strip
          image_url = coin_container.css("img").attr("src").value
+         info_url = coin_container.css("a.currency-name-container").attr("href").value
          price = coin_container.css("a.price").attr("data-usd").value.strip
          #puts "#{index + 1}. #{name}-$#{price}"
-         {:name => name, :current_price => price, :image_url => image_url}
+         {:name => name, :current_price => price, :image_url => image_url, :info_url => info_url}
        }
   end
 
-  def self.scrape_info_page(name)
-  doc = Nokogiri::HTML(open(COIN_MARKET_CAP_URL + "currencies/" + name.downcase + "/"))
+  def self.scrape_info_page(suffix)
+  doc = Nokogiri::HTML(open(COIN_MARKET_CAP_URL + suffix))
   info_hash = {}
   info_hash[:percent_change] = doc.css(".details-panel-item--price .h2 span").text
   info_hash[:btc_price] = doc.css(".details-panel-item--price .text-gray span").text.strip

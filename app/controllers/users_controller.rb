@@ -4,6 +4,8 @@ class UsersController < ApplicationController
   get '/users/login' do
     #binding.pry
     if !Helper.logged_in?(session)
+      #binding.pry
+      @true = true
      erb :'users/login'
     else
      redirect "/users/#{Helper.current_user(session).id}"
@@ -40,7 +42,7 @@ class UsersController < ApplicationController
   post "/users" do
     #binding.pry
     @user = User.new(:username => params[:username], :password => params[:password])
-    if @user.save && !User.all.find_by(params[:username])
+    if @user.save
       session[:id] = @user.id
       redirect "/coins"
     else
@@ -71,16 +73,35 @@ class UsersController < ApplicationController
 
   # GET: /users/5/edit
   get "/users/:id/edit" do
-    erb :"/users/edit.html"
+    @user = User.find_by_id(params[:id])
+    if @user == Helper.current_user(session)
+      erb :"/users/edit.html"
+    else
+      redirect "/"
+    end
   end
 
   # PATCH: /users/5
   patch "/users/:id" do
-    redirect "/users/:id"
+    @user = User.find_by_id(params[:id])
+    if @user == Helper.current_user(session) && params[:password] == params[:re_password]
+      @user.update(password: params[:password])
+      redirect "/users/:id"
+    else
+      redirect "/"
+    end
   end
 
   # DELETE: /users/5/delete
   delete "/users/:id/delete" do
-    redirect "/users"
+    user = User.find_by_id(params[:id])
+    if user == Helper.current_user(session)
+      user.coins.each {|coin| coin.destroy}
+      user.destroy
+      session[:id] = nil
+      redirect "/"
+    else
+      redirect "/"
+    end
   end
 end

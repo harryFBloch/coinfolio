@@ -12,14 +12,18 @@
 <ul class="collection" id = "coin-list">
 <% @available_coins.each_with_index do |coin, index| %>
     <li class="collection-item avatar"><a>
+      
       <span class="title blue-grey-text lighten-4"><%= coin.name %></span>
       <p class = "blue-grey-text lighten-4" >$<%= coin.current_price.round(3) %></p>
-      <a href="/coins/show/<%= index %>" class="secondary-content red-text darken-6">More Info</a>
-      </a>
+      <a href="/coins/show/<%= index %>" class="secondary-content red-text darken-6">More Info</a></a>
     </li>
     <% end %>
   </ul>
 
+
+  $(document).ready(function(){
+    lazyload();
+  }
   <script>
   function myFunction() {
       // Declare variables

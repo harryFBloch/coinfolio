@@ -50,9 +50,10 @@ class CoinsController < ApplicationController
   get '/coins/show/:id' do
     if Helper.logged_in?(session)
       @coin = Coin.available_coins[params[:id].to_i]
-      @coin_hash = Coin.scrape_info_page(@coin.name)
-      @index = params[:id].to_i
-      erb :"/coins/show.html"
+      if @coin_hash = Coin.scrape_info_page(@coin.info_url)
+        @index = params[:id].to_i
+        erb :"/coins/show.html"
+      end
     else
       redirect "/users/login"
     end
@@ -63,7 +64,7 @@ class CoinsController < ApplicationController
     @coin = Coin.new
     @coin = Coin.find_by_id(params[:id])
     if @coin.id && @coin.user.id == Helper.current_user(session).id
-      @coin_hash = Coin.scrape_info_page(@coin.name)
+      @coin_hash = Coin.scrape_info_page(@coin.info_url)
       erb :"/coins/show.html"
     else
       redirect '/users/login'
