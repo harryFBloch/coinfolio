@@ -12,7 +12,7 @@
 <ul class="collection" id = "coin-list">
 <% @available_coins.each_with_index do |coin, index| %>
     <li class="collection-item avatar"><a>
-      
+      <img class="lazy" src="#" data-src="<%= coin.image_url %>" data-srcset="<%= coin.image_url %>" alt="I'm an image!" height = "16" width = 16>
       <span class="title blue-grey-text lighten-4"><%= coin.name %></span>
       <p class = "blue-grey-text lighten-4" >$<%= coin.current_price.round(3) %></p>
       <a href="/coins/show/<%= index %>" class="secondary-content red-text darken-6">More Info</a></a>
@@ -20,10 +20,6 @@
     <% end %>
   </ul>
 
-
-  $(document).ready(function(){
-    lazyload();
-  }
   <script>
   function myFunction() {
       // Declare variables
@@ -43,4 +39,30 @@
           }
       }
   }
+  </script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+
+if ("IntersectionObserver" in window) {
+  let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        let lazyImage = entry.target;
+        lazyImage.src = lazyImage.dataset.src;
+        lazyImage.srcset = lazyImage.dataset.srcset;
+        lazyImage.classList.remove("lazy");
+        lazyImageObserver.unobserve(lazyImage);
+      }
+    });
+  });
+
+  lazyImages.forEach(function(lazyImage) {
+    lazyImageObserver.observe(lazyImage);
+  });
+} else {
+  // Possibly fall back to a more compatible method here
+}
+});
   </script>

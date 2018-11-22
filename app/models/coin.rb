@@ -19,7 +19,13 @@ class Coin < ActiveRecord::Base
       doc = Nokogiri::HTML(open(COIN_MARKET_CAP_URL))
        coin_array = doc.css("tbody tr").each_with_index.map { |coin_container, index|
          name = coin_container.css("a.currency-name-container").text.strip
-         image_url = coin_container.css("img").attr("src").value
+
+         if index < 10
+           image_url = coin_container.css("img.logo-sprite").attr("src").value
+         else
+           #binding.pry
+           image_url = coin_container.css("img.logo-sprite").attr("data-src").value
+         end
          info_url = coin_container.css("a.currency-name-container").attr("href").value
          price = coin_container.css("a.price").attr("data-usd").value.strip
          #puts "#{index + 1}. #{name}-$#{price}"
