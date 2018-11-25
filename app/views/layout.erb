@@ -18,13 +18,12 @@
       <% logged = Helper.logged_in?(session) %>
       <% if logged %>
       <ul id="dropdown1" class="dropdown-content">
-        <li><a href="/users/<%=Helper.current_user(session).id%>/edit">Change Password</a></li>
-        <li><a href="/users/logout">Logout</a></li>
+        <li><a href="/users/<%=Helper.current_user(session).id%>/edit" class="red-text darken-6" >Change Password</a></li>
+        <li><a class="red-text darken-6" href="/users/logout">Logout</a></li>
         <li class="divider"></li>
-        <li onclick="delete_user.submit()"><a >Delete User</a></li>
+        <li onclick="delete_user.submit()"><a class="red-text darken-1">Delete User</a></li>
         <form method="post" action = "/users/<%= Helper.current_user(session).id %>/delete" id="delete_user">
           <input type="hidden" id = "hidden" name="_method" value="DELETE">
-
         </form>
       </ul>
       <% end %>

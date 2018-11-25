@@ -34,11 +34,13 @@ class CoinsController < ApplicationController
 
   # POST: /coins
   post "/coins" do
+    #binding.pry
     @coin = Coin.new
     if !params[:coin_index].empty?
       @coin = Coin.available_coins[params[:coin_index].to_i]
     end
-    if Helper.logged_in?(session) && @coin.update(user_id: Helper.current_user(session).id, price_paid: params[:price_paid], amount: params[:amount])
+    if Helper.logged_in?(session) && @coin.update(user_id: Helper.current_user(session).id,
+      price_paid: params[:price_paid], amount: params[:amount],name: params[:coin])
       redirect "/coins"
     else
       @available_coins = Coin.available_coins
