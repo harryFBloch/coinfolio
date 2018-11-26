@@ -5,11 +5,11 @@
   <form class = "col s12" method = "post" action = "/users/<%= @user.id%>" id="coinform">
     <input type="hidden" id = "hidden" name="_method" value="PATCH">
     <div class = "input-field col s6">
-      <input class="red-text darken-6" type="text" name="password" id = "password">
+      <input class="red-text darken-6" type="password" name="password" id = "password">
       <label class="active" for = "password">Enter New Password:</label>
     </div>
     <div class = "input-field col s6">
-      <input class="red-text darken-6" type="text" name="re_password"" id = "re_password">
+      <input class="red-text darken-6" type="password" name="re_password"" id = "re_password">
         <label class="active" for = "re_password"">Re-enter password:</label>
     </div>
     <button class="btn waves-effect waves-light red darken-6 left" type="submit" name="action" for="post-form">Update Password
