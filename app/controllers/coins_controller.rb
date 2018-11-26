@@ -87,14 +87,11 @@ class CoinsController < ApplicationController
   # PATCH: /coins/5
   patch "/coins/:id" do
     coin = Coin.find_by_id(params[:id])
-    binding.pry
     if params[:amount] != "" && Helper.current_user(session).id == coin.user.id
-      params[:buy].to_i == 1 ? coin.amount += params[:amount].to_f : coin.amount -= params[:amount].to_f
-      #binding.pry
-      params[:current_price].to_f > 0 ? coin.price_paid = params[:current_price] : coin.price_paid = params[:price]
-      #binding.pry
+      coin.amount = params[:amount]
+      coin.price_paid = params[:price]
       coin.save
-      redirect "/users"
+      redirect "/users/#{Helper.current_user(session).id}"
     else
 
     end

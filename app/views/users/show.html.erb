@@ -20,8 +20,8 @@
   <tr class = "blue-grey-text lighten-2">
     <td><a href = "/coins/<%= coin.id %>"><%= coin.name %></a></td>
     <td><%= coin.amount %></td>
-    <td><%= coin.price_paid %></td>
-    <td><%= coin.current_price %></td>
+    <td>$<%= coin.price_paid %></td>
+    <td>$<%= coin.current_price %></td>
     <% increase = coin.current_price.to_f - coin.price_paid.to_f%>
     <td><%= ((increase / coin.price_paid.to_f) * 100) %></td>
   </tr>
