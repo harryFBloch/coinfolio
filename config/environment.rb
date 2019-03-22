@@ -19,6 +19,7 @@
 require 'bundler/setup'
 require 'nokogiri'
 require 'open-uri'
+require 'pry'
 
 Bundler.require
 

@@ -1,6 +1,6 @@
+require 'pry'
+
 class UsersController < ApplicationController
-
-
   get '/users/login' do
     #binding.pry
     if !Helper.logged_in?(session)
@@ -40,8 +40,10 @@ class UsersController < ApplicationController
 
   # POST: /users
   post "/users" do
-    #binding.pry
+
     @user = User.new(:username => params[:username], :password => params[:password])
+    binding.pry
+    puts params
     if @user.save
       session[:id] = @user.id
       redirect "/coins"
