@@ -84,6 +84,12 @@ class CoinsController < ApplicationController
     end
   end
 
+  post '/coins/search' do
+    @searched_coins = Coin.available_coins.find_all{ |coin| coin.name.downcase.include? params[:search_tearm]}
+    @available_coins = Coin.available_coins.find_all{ |coin| coin.name.downcase.include? params[:search_tearm]}
+    erb :'/coins/index.html'
+  end
+
   # PATCH: /coins/5
   patch "/coins/:id" do
     coin = Coin.find_by_id(params[:id])

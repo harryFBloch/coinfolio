@@ -2,6 +2,15 @@
   <link rel="stylesheet" href="/stylesheets/coin_index.css">
 </head>
 
+<form method="post" action = "/coins/search">
+    <input type = "text" name ="search_tearm" />
+    <input type="submit">
+</form>
+<% if @searched_coins %>
+  <% @searched_coins.each do |coin|%>
+    <p> <%= coin.name%></p>
+  <% end%>
+<% end%>
 <h1 class = "blue-grey-text lighten-2">Welcome To Coinfolio</h1>
 <form>
 <div class = "input-field col s6">
